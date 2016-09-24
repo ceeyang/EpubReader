@@ -1,0 +1,20 @@
+//
+//  PrefixHeader.pch
+//  XCEpubReader
+//
+//  Created by pro on 2016/9/23.
+//  Copyright © 2016年 daisy. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import "UIScrollView+Touch.h"
+#import "Masonry.h"
+#import "ReaderConfig.h"
+#import "GDataXMLNode.h"
+#import "XCReaderConst.h"
+#import "UIColor+Hex.h"
+#endif /* PrefixHeader_pch */

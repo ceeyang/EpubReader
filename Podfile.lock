@@ -1,0 +1,16 @@
+PODS:
+  - GDataXML-HTML (1.3.0)
+  - Masonry (1.0.2)
+  - ZipArchive (1.4.0)
+
+DEPENDENCIES:
+  - GDataXML-HTML
+  - Masonry
+  - ZipArchive
+
+SPEC CHECKSUMS:
+  GDataXML-HTML: 7adc03668cab35c288f1dbb8929a179f0fece898
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
+  ZipArchive: e25a4373192673e3229ac8d6e9f64a3e5713c966
+
+COCOAPODS: 0.39.0
