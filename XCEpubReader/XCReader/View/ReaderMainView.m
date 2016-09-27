@@ -10,8 +10,10 @@
 
 #define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
 
+
 @interface ReaderMainView () <UIScrollViewDelegate, UIWebViewDelegate,UIGestureRecognizerDelegate>
 @property (assign, nonatomic) CGPoint touchBeginPoint;
+@property (nonatomic, copy) WebViewDidScrollBlock webViewDidScrollBlock;
 @end
 
 @implementation ReaderMainView
@@ -61,6 +63,10 @@
     _recordModel.page = pageIndex;
     float pageOffset  = pageIndex * self.webView.bounds.size.width;
     [self.webView.scrollView setContentOffset:CGPointMake(pageOffset, 0) animated:NO];;
+    if (self.webViewDidScrollBlock) {
+        CGFloat pageValue = (CGFloat)(_currentPageIndex+1) / (CGFloat)_pageCount;
+        self.webViewDidScrollBlock(pageValue);
+    }
 }
 
 - (void)setFontSize:(int)fontSize
@@ -78,7 +84,7 @@
 {
     NSString * themeTextColor = @"#000000";
     NSString * themeBodyColor = @"#ffffff";
-    CGFloat    pageWidth      = self.webView.frame.size.width  - 20;
+    CGFloat    pageWidth      = self.webView.frame.size.width;
     CGFloat    pageHeight     = self.webView.frame.size.height - 20;
     
     /** 添加 JS 代码 */
@@ -132,7 +138,15 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     CGFloat   pageWidth   = scrollView.frame.size.width;
+    CGFloat lastPageIndex = _currentPageIndex;
     _currentPageIndex     = ceil(scrollView.contentOffset.x / pageWidth);
+    
+    if (lastPageIndex != _currentPageIndex) {
+        if (self.webViewDidScrollBlock) {
+            CGFloat pageValue = (CGFloat)(_currentPageIndex+1) / (CGFloat)_pageCount;
+            self.webViewDidScrollBlock(pageValue);
+        }
+    }
     
     CGPoint touchEndPoint = scrollView.contentOffset;
     _next = self.touchBeginPoint.x > touchEndPoint.x + 5;
@@ -156,5 +170,8 @@
     }
 }
 
-
+- (void)setBlockPageDidChangedAction:(void (^)(CGFloat))block
+{
+    self.webViewDidScrollBlock = block;
+}
 @end

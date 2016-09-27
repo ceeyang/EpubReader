@@ -61,5 +61,8 @@
 /** 下一页   */
 - (void)gotoPage: (int)pageIndex;
 
-- (void)setFontSize:(int)fontSize;
+- (void)setFontSize: (int)fontSize;
+
+/** 翻页出发的事件,用于更新进度 */
+- (void)setBlockPageDidChangedAction:(void (^)(CGFloat page))block;
 @end

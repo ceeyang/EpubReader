@@ -10,16 +10,12 @@
 
 @interface ReaderBottomView : UIView
 
-@property (nonatomic, strong) UISlider * mSlider;
+@property (nonatomic, strong) UISlider * pageSlider;
 
-@property (nonatomic, strong) UILabel  * mCurrentChapterlabel;
+@property (nonatomic, strong) NSString  * mCurrentChapter;
 
-@property (nonatomic, strong) UIButton * mBigSizeBtn;
+- (void)setBlockBottomBtnAction:(void (^)(UIButton *btn))block;
 
-@property (nonatomic, strong) UIButton * mSmallSizeBtn;
-
-@property (nonatomic, strong) UIButton * mDaytimeBtn;
-
-@property (nonatomic, strong) UIButton * mNightModelBtn;
+- (void)setBlockSliderValueChangeAction:(void (^)(CGFloat value))block;
 
 @end

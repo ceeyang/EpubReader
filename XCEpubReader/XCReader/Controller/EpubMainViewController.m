@@ -11,15 +11,19 @@
 #import "EPubBookModel.h"
 #import "ReaderMainView.h"
 #import "EpubRecordModel.h"
+#import "ReaderBottomView.h"
 
 @interface EpubMainViewController ()<EPubViewDelegate>
 
 /** 导航栏视图 */
 @property (nonatomic, strong) ReaderTopView  * topView;
-/** 当前加载的电子书 */
-@property (nonatomic, strong) EpubBookModel  * epubBook;
 /** 主视图 */
 @property (nonatomic, strong) ReaderMainView * mainView;
+/** 底部视图 */
+@property (nonatomic, strong) ReaderBottomView * bottomView;
+
+/** 当前加载的电子书 */
+@property (nonatomic, strong) EpubBookModel  * epubBook;
 
 /** 当前章节在书中的索引值，从0开始 */
 @property (nonatomic, assign) int              currentSpineIndex;
@@ -27,6 +31,8 @@
 @property (nonatomic, assign) int              totalPagesCount;
 /** 跳转页码 */
 @property (nonatomic, assign) NSInteger        gotoPage;
+/** 是否需要显示工具栏 */
+@property (nonatomic, assign) BOOL             needShowToolView;
 
 @end
 
@@ -35,10 +41,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-
+    self.needShowToolView     = true;
+    
     [self parseEpubData];
     [self setupUI];
     [self addBlockAction];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self performSelector:@selector(showOrHidenToolView) withObject:nil afterDelay:2.0f];
 }
 
 - (void)setupUI
@@ -60,6 +73,14 @@
         make.height.mas_equalTo(kTopViewHeight);
     }];
     self.topView             = topView;
+    
+    ReaderBottomView *bottom = [ReaderBottomView new];
+    [self.view addSubview: bottom];
+    [bottom mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.bottom.equalTo(self.view);
+        make.height.equalTo(@110);
+    }];
+    self.bottomView          = bottom;
 }
 
 - (void)addBlockAction
@@ -70,7 +91,34 @@
     }];
     
     [self.topView setBlockMoreBtnAction:^(UIButton *sender) {
-        NSLog(@"%@ : %s",[weakSelf class],__func__);
+        [weakSelf.mainView setFontSize:150];
+    }];
+    
+    [self.mainView setBlockPageDidChangedAction:^(CGFloat page) {
+        weakSelf.bottomView.pageSlider.value = page;
+    }];
+    
+    [self.bottomView setBlockBottomBtnAction:^(UIButton *btn) {
+        if        (btn.tag == 0) {
+            ReaderConfiger.textSize -= 5;
+            [weakSelf.mainView setFontSize:ReaderConfiger.textSize];
+        } else if (btn.tag == 1) {
+            ReaderConfiger.textSize += 5;
+            [weakSelf.mainView setFontSize:ReaderConfiger.textSize];
+        } else if (btn.tag == 2) {
+            [weakSelf.mainView loadChapter: weakSelf.epubBook.lastChapter];
+        } else if (btn.tag == 3) {
+            [weakSelf.mainView loadChapter: weakSelf.epubBook.nextChapter];
+        } else if (btn.tag == 4) {
+            //[weakSelf.mainView setThemes: ReaderConfiger.dailyTheme];
+        } else if (btn.tag == 5) {
+            //[weakSelf.mainView setThemes: ReaderConfiger.nightTheme];
+        }
+    }];
+    
+    [self.bottomView setBlockSliderValueChangeAction:^(CGFloat value) {
+        int sliderPage = weakSelf.mainView.pageCount * value;
+        [weakSelf.mainView gotoPage: sliderPage];
     }];
 }
 
@@ -93,6 +141,7 @@
 
 - (void)gotoPrevSpine
 {
+    [self showLoadingView];
     if (_currentSpineIndex > 0)
     {
         [self gotoPage:0 inSpine:--_currentSpineIndex];
@@ -101,21 +150,27 @@
 
 - (void)gotoNextSpine
 {
-    if (_currentSpineIndex < self.epubBook.spineArray.count - 1)
+    [self showLoadingView];
+    if (_currentSpineIndex < self.epubBook.spineArray.count - 1) {
         [self gotoPage:0 inSpine:++_currentSpineIndex];
+    }
 }
 
 - (void)epubViewLoadFinished
 {
-    if (self.mainView.next)
+    [self hideLoadingView];
+    if (self.mainView.next) {
         [self gotoPageInCurrentSpine:0];
-    else
+    } else {
         [self gotoPageInCurrentSpine:self.mainView.pageCount - 1];
+    }
+    CGFloat sliderValue = self.mainView.currentPageIndex / self.mainView.pageCount;
+    self.bottomView.pageSlider.value = sliderValue;
 }
 
 - (void)tapGestureDidRecognized
 {
-    [self showOrHidenTopView];
+    [self showOrHidenToolView];
 }
 
 
@@ -134,33 +189,51 @@
     [self.mainView loadChapter: chapter];
 }
 
-- (void)showOrHidenTopView
+- (void)showOrHidenToolView
 {
-    
-    CGPoint headCenter = self.topView.center;
-    CGFloat viewAlpha  = 0;
+    CGPoint headCenter   = self.topView.center;
+    CGPoint footCenter   = self.bottomView.center;
+    CGFloat viewAlpha    = 0;
     
     if (self.topView.center.y > 0) {
-        viewAlpha      = 0;
-        headCenter.y  -= self.topView.frame.size.height;
+        viewAlpha        = 0;
+        headCenter.y    -= self.topView.frame.size.height;
+        footCenter.y    += self.bottomView.frame.size.height;
         /** 需要设置info.plist里的 View controller-based status bar appearance 设为NO */
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
     } else {
-        viewAlpha      = 1.0f;
-        headCenter.y  += self.topView.frame.size.height;
+        viewAlpha        = 1.0f;
+        headCenter.y    += self.topView.frame.size.height;
+        footCenter.y    -= self.bottomView.frame.size.height;
         [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     }
     
     self.mainView.webView.userInteractionEnabled = false;
     __weak typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.3f animations:^{
-        weakSelf.topView.alpha  = viewAlpha;
-        weakSelf.topView.center = headCenter;
+        weakSelf.topView.alpha    = viewAlpha;
+        weakSelf.bottomView.alpha = viewAlpha;
+        weakSelf.topView.center   = headCenter;
+        weakSelf.bottomView.center=footCenter;
     } completion:^(BOOL finished) {
         weakSelf.mainView.webView.userInteractionEnabled = true;
     }];
 }
 
+
+
+- (void)showLoadingView
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.mainView animated:YES];
+    hud.label.text     = @"请稍等";
+    hud.dimBackground  = true;
+    hud.opacity        = 0.5;
+}
+
+- (void)hideLoadingView
+{
+    [MBProgressHUD hideHUDForView:self.mainView animated:true];
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -172,6 +245,4 @@
 {
     NSLog(@"%@ Dealloc Success",[self class]);
 }
-
-
 @end

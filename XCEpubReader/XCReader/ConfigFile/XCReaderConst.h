@@ -21,6 +21,7 @@
 
 /** Action Block */
 typedef void(^ButtonActionBlock)(UIButton *btn);
-
+typedef void(^SliderValueChangeBlock)(CGFloat value);
+typedef void(^WebViewDidScrollBlock)(CGFloat currentPage);
 
 #endif /* XCReaderConst_h */

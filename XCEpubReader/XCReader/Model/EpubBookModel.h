@@ -33,6 +33,9 @@
 /** 浏览记录信息 */
 @property (nonatomic, strong) EpubRecordModel  * recordModel;
 
+@property (nonatomic, strong) EpubChapterModel * currentChapter;
+@property (nonatomic, strong) EpubChapterModel * lastChapter;
+@property (nonatomic, strong) EpubChapterModel * nextChapter;
 
 - (id)initWithEPubBookPath: (NSURL *)bookPath;
 

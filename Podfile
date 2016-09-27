@@ -7,5 +7,6 @@ target 'XCEpubReader' do
 pod 'GDataXML-HTML'
 pod 'Masonry'
 pod 'ZipArchive'
+pod 'MBProgressHUD'
 end
 
