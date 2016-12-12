@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		151EC0611D9A3EC800D538C8 /* ReaderThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = 151EC0601D9A3EC800D538C8 /* ReaderThemes.m */; };
+		151EC0651D9A643D00D538C8 /* ReaderPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151EC0641D9A643D00D538C8 /* ReaderPageViewController.m */; };
+		151EC0681D9A687000D538C8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151EC0671D9A687000D538C8 /* MainViewController.m */; };
+		158AE9DA1DFAA2BD00370F62 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 158AE9D91DFAA2BD00370F62 /* DirectoryViewController.m */; };
+		158AE9DC1DFE4D1900370F62 /* GreatWorld.epub in Resources */ = {isa = PBXBuildFile; fileRef = 158AE9DB1DFE4D1900370F62 /* GreatWorld.epub */; };
 		15FC799F1D952BA4008A92B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC799E1D952BA4008A92B9 /* main.m */; };
 		15FC79A21D952BA4008A92B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79A11D952BA4008A92B9 /* AppDelegate.m */; };
 		15FC79A51D952BA4008A92B9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79A41D952BA4008A92B9 /* ViewController.m */; };
@@ -36,6 +41,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		151EC05F1D9A3EC800D538C8 /* ReaderThemes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderThemes.h; sourceTree = "<group>"; };
+		151EC0601D9A3EC800D538C8 /* ReaderThemes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderThemes.m; sourceTree = "<group>"; };
+		151EC0631D9A643D00D538C8 /* ReaderPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPageViewController.h; sourceTree = "<group>"; };
+		151EC0641D9A643D00D538C8 /* ReaderPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPageViewController.m; sourceTree = "<group>"; };
+		151EC0661D9A687000D538C8 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		151EC0671D9A687000D538C8 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		158AE9D81DFAA2BD00370F62 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
+		158AE9D91DFAA2BD00370F62 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
+		158AE9DB1DFE4D1900370F62 /* GreatWorld.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = GreatWorld.epub; sourceTree = "<group>"; };
 		15FC799A1D952BA4008A92B9 /* XCEpubReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCEpubReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15FC799E1D952BA4008A92B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		15FC79A01D952BA4008A92B9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
@@ -96,6 +110,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		151EC0621D9A641300D538C8 /* PageTest */ = {
+			isa = PBXGroup;
+			children = (
+				151EC0631D9A643D00D538C8 /* ReaderPageViewController.h */,
+				151EC0641D9A643D00D538C8 /* ReaderPageViewController.m */,
+				151EC0661D9A687000D538C8 /* MainViewController.h */,
+				151EC0671D9A687000D538C8 /* MainViewController.m */,
+			);
+			path = PageTest;
+			sourceTree = "<group>";
+		};
 		15FC79911D952BA4008A92B9 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				15FC79B61D952C0C008A92B9 /* SytemFile */,
+				151EC0621D9A641300D538C8 /* PageTest */,
 				15FC79B51D952BF8008A92B9 /* XCReader */,
 				15FC799D1D952BA4008A92B9 /* Supporting Files */,
 			);
@@ -149,6 +175,7 @@
 		15FC79B61D952C0C008A92B9 /* SytemFile */ = {
 			isa = PBXGroup;
 			children = (
+				158AE9DB1DFE4D1900370F62 /* GreatWorld.epub */,
 				15FC79A01D952BA4008A92B9 /* AppDelegate.h */,
 				15FC79A11D952BA4008A92B9 /* AppDelegate.m */,
 				15FC79A31D952BA4008A92B9 /* ViewController.h */,
@@ -166,6 +193,8 @@
 			children = (
 				15FC79BB1D953004008A92B9 /* EpubMainViewController.h */,
 				15FC79BC1D953004008A92B9 /* EpubMainViewController.m */,
+				158AE9D81DFAA2BD00370F62 /* DirectoryViewController.h */,
+				158AE9D91DFAA2BD00370F62 /* DirectoryViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -179,6 +208,8 @@
 				15FC7A3E1D957B61008A92B9 /* EpubChapterModel.m */,
 				15FF2E6B1D96535600B496CF /* EpubRecordModel.h */,
 				15FF2E6C1D96535600B496CF /* EpubRecordModel.m */,
+				151EC05F1D9A3EC800D538C8 /* ReaderThemes.h */,
+				151EC0601D9A3EC800D538C8 /* ReaderThemes.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -320,6 +351,7 @@
 				15FC79AD1D952BA4008A92B9 /* LaunchScreen.storyboard in Resources */,
 				15FC7A181D9540F6008A92B9 /* new_head_more@2x.png in Resources */,
 				15FC7A171D9540F6008A92B9 /* new_head_more_pre@3x.png in Resources */,
+				158AE9DC1DFE4D1900370F62 /* GreatWorld.epub in Resources */,
 				15FC79AA1D952BA4008A92B9 /* Assets.xcassets in Resources */,
 				15FC7A411D957D30008A92B9 /* 四大名捕系列.epub in Resources */,
 				15FC7A111D9540B7008A92B9 /* new_head_arrow_left@3x.png in Resources */,
@@ -387,7 +419,10 @@
 				15FF2E6D1D96535600B496CF /* EpubRecordModel.m in Sources */,
 				15FC7A441D9584FE008A92B9 /* ReaderMainView.m in Sources */,
 				15FC7A3F1D957B61008A92B9 /* EpubChapterModel.m in Sources */,
+				151EC0651D9A643D00D538C8 /* ReaderPageViewController.m in Sources */,
 				15FC7A201D954A70008A92B9 /* EpubBookModel.m in Sources */,
+				158AE9DA1DFAA2BD00370F62 /* DirectoryViewController.m in Sources */,
+				151EC0681D9A687000D538C8 /* MainViewController.m in Sources */,
 				15FC79C21D953045008A92B9 /* ReaderTopView.m in Sources */,
 				15FC79A51D952BA4008A92B9 /* ViewController.m in Sources */,
 				15FC79A21D952BA4008A92B9 /* AppDelegate.m in Sources */,
@@ -396,6 +431,7 @@
 				15FF2E6A1D962EC000B496CF /* UIColor+Hex.m in Sources */,
 				15FF2E701D968D6200B496CF /* ReaderBottomView.m in Sources */,
 				15FC79BF1D953004008A92B9 /* EpubMainViewController.m in Sources */,
+				151EC0611D9A3EC800D538C8 /* ReaderThemes.m in Sources */,
 				15FC79CE1D953390008A92B9 /* UIScrollView+Touch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

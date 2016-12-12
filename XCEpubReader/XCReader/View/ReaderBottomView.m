@@ -26,7 +26,7 @@
 {
     self.backgroundColor   = [ReaderConfig shareInstance].themeColor;
     
-    NSArray *btnTitleArr   = @[@"A-",@"A+",@"Next",@"Last",@"Daily",@"Night"];
+    NSArray *btnTitleArr   = @[@"A-",@"A+",@"Last",@"Next",@"Daily",@"Night"];
     NSMutableArray *btnArr = [NSMutableArray array];
     for (int i = 0; i < btnTitleArr.count; i++) {
         UIButton *btn = [UIButton new];
@@ -37,7 +37,7 @@
         [self addSubview: btn];
         [btnArr addObject: btn];
     }
-    [btnArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
+    [btnArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:5 leadSpacing:10 tailSpacing:10];
     [btnArr mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.mas_bottom).offset(-10);
         make.height.equalTo(@44);

@@ -10,6 +10,7 @@
 
 @implementation ReaderConfig
 
+#pragma mark - Private Method -
 +(instancetype)shareInstance
 {
     static ReaderConfig *readConfig = nil;
@@ -32,6 +33,8 @@
             [config addObserver:config forKeyPath:@"textColor"  options: NSKeyValueObservingOptionNew context: NULL];
             [config addObserver:config forKeyPath:@"themeColor" options: NSKeyValueObservingOptionNew context: NULL];
             [config addObserver:config forKeyPath:@"backColr"   options: NSKeyValueObservingOptionNew context: NULL];
+            [config addObserver:config forKeyPath:@"themeStyle" options: NSKeyValueObservingOptionNew context: NULL];
+            [config addObserver:config forKeyPath:@"themes"     options: NSKeyValueObservingOptionNew context: NULL];
             return config;
         }
         
@@ -39,11 +42,15 @@
         _textColor      = [UIColor blackColor];
         _themeColor     = [UIColor lightGrayColor];
         _backGroundColr = [UIColor whiteColor];
+        _themeStyle     = Default;
+        _themes         = [self getDefaultThemes];
         
         [self addObserver:self forKeyPath:@"textSize"   options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"textColor"  options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"themeColor" options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"backColr"   options:NSKeyValueObservingOptionNew context: NULL];
+        [self addObserver:self forKeyPath:@"themeStyle" options:NSKeyValueObservingOptionNew context: NULL];
+        [self addObserver:self forKeyPath:@"themes"     options:NSKeyValueObservingOptionNew context: NULL];
         [ReaderConfig updateLocalConfig:self];
         
     }
@@ -66,10 +73,12 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeDouble: self.textSize       forKey: @"textSize"];
-    [aCoder encodeObject: self.textColor      forKey: @"textColor"];
-    [aCoder encodeObject: self.themeColor     forKey: @"themeColor"];
-    [aCoder encodeObject: self.backGroundColr forKey: @"backColr"];
+    [aCoder encodeDouble:  self.textSize       forKey: @"textSize"];
+    [aCoder encodeObject:  self.textColor      forKey: @"textColor"];
+    [aCoder encodeObject:  self.themeColor     forKey: @"themeColor"];
+    [aCoder encodeObject:  self.backGroundColr forKey: @"backColr"];
+    [aCoder encodeInteger: self.themeStyle     forKey: @"themeStyle"];
+    [aCoder encodeObject:  self.themes         forKey: @"themes"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -80,8 +89,50 @@
         self.textColor      = [aDecoder decodeObjectForKey: @"textColor"];
         self.themeColor     = [aDecoder decodeObjectForKey: @"themeColor"];
         self.backGroundColr = [aDecoder decodeObjectForKey: @"backColr"];
+        self.themeStyle     = [aDecoder decodeIntegerForKey:@"themeStyle"];
+        self.themes         = [aDecoder decodeObjectForKey: @"themes"];
     }
     return self;
 }
 
+- (ReaderThemes*)getDefaultThemes
+{
+    ReaderThemes *themeModel = [ReaderThemes new];
+    themeModel.textColor               = @"#000000"; /** 纯黑 */
+    themeModel.textBackgroundColor     = @"#ffffff"; /** 纯白 */
+    themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
+    themeModel.toolViewToolColor       = [UIColor blackColor];
+    return themeModel;
+}
+
+- (void)setThemeStyle:(ReaderThemesEnum)themeStyle
+{
+    ReaderThemes *themeModel = [ReaderThemes new];
+    switch (themeStyle) {
+        case Default:
+            themeModel                         = [self getDefaultThemes];
+            break;
+        case ProtectEyes:
+            themeModel.textColor               = @"#EAEAEF"; /** 纯黑 */
+            themeModel.textBackgroundColor     = @"#C7EDCC"; /** 纯白 */
+            themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
+            themeModel.toolViewToolColor       = [UIColor blackColor];
+            break;
+        case Daily:
+            themeModel.textColor               = @"#000000"; /** 纯黑 */
+            themeModel.textBackgroundColor     = @"#ffffff"; /** 纯白 */
+            themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
+            themeModel.toolViewToolColor       = [UIColor blackColor];
+            break;
+        case Night:
+            themeModel.textColor               = @"#ffffff"; /** 纯白 */
+            themeModel.textBackgroundColor     = @"#000000"; /** 纯黑 */
+            themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
+            themeModel.toolViewToolColor       = [UIColor blackColor];
+            break;
+        default:
+            break;
+    }
+    self.themes = themeModel;
+}
 @end

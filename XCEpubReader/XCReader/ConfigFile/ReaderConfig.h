@@ -8,6 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "ReaderThemes.h"
+
+/** ENUM */
+typedef NS_ENUM(NSUInteger, ReaderThemesEnum) {
+    Default      = 0,     /**< 默认主题 */
+    ProtectEyes,          /**< 护眼模式 */
+    Daily,                /**< 白天模式 */
+    Night                 /**< 夜间模式 */
+};
 
 #pragma mark - ReaderConfig -
 @interface ReaderConfig : NSObject
@@ -27,6 +36,11 @@
 /** 背景颜色, 默认: 白色 */
 @property (nonatomic, strong) UIColor * backGroundColr;
 
+/** 当前主题 */
+@property (nonatomic, strong) ReaderThemes * themes;
+
+/** 提供几个默认主题,也可以自己设置 */
+@property (nonatomic, assign) ReaderThemesEnum  themeStyle;
 @end
 
 

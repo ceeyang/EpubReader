@@ -7,6 +7,7 @@
 //
 
 #import "ReaderMainView.h"
+#import "ReaderThemes.h"
 
 #define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
 
@@ -28,7 +29,7 @@
 
 - (void)setupUI
 {
-    self.backgroundColor                               = ReaderConfiger.themeColor;
+    self.backgroundColor = [UIColor colorWithHexString:ReaderConfiger.themes.textBackgroundColor];
     _next                                              = YES;
     _fontSize                                          = ReaderConfiger.textSize;
     _webView                                           = [UIWebView new];
@@ -48,16 +49,15 @@
     }];
 }
 
-
 - (void)loadChapter:(EpubChapterModel *)chapter
 {
-    _chapter                  = chapter;
-    _recordModel.chapterModel = _chapter;
+    _chapter                      = chapter;
+    _recordModel.chapterModel     = _chapter;
     NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@",kUserDocuments,chapter.spinePath]];
     [self.webView loadRequest: [NSURLRequest requestWithURL:url]];
 }
 
-- (void)gotoPage:(int)pageIndex
+- (void)gotoPage:(NSInteger)pageIndex
 {
     _currentPageIndex = pageIndex;
     _recordModel.page = pageIndex;
@@ -78,25 +78,31 @@
     }
 }
 
+- (void)updateThemes:(ReaderThemesEnum)themStyle
+{
+    ReaderConfiger.themeStyle = themStyle;
+    self.backgroundColor = [UIColor colorWithHexString:ReaderConfiger.themes.textBackgroundColor];
+    [self loadChapter: self.chapter];
+}
 
 #pragma mark - WebView Delegate Method
 - (void)webViewDidFinishLoad:(UIWebView *)theWebView
 {
-    NSString * themeTextColor = @"#000000";
-    NSString * themeBodyColor = @"#ffffff";
+    NSString * themeTextColor = ReaderConfiger.themes.textColor;
+    NSString * themeBodyColor = ReaderConfiger.themes.textBackgroundColor;
     CGFloat    pageWidth      = self.webView.frame.size.width;
     CGFloat    pageHeight     = self.webView.frame.size.height - 20;
     
     /** 添加 JS 代码 */
     NSString *varMySheet     = @"var mySheet = document.styleSheets[0];";
     NSString *addCSSRule     = @"function addCSSRule(selector, newRule) {"
-    "if (mySheet.addRule) {"
-    "mySheet.addRule(selector, newRule);"								// For Internet Explorer
-    "} else {"
-    "ruleIndex = mySheet.cssRules.length;"
-    "mySheet.insertRule(selector + '{' + newRule + ';}', ruleIndex);"   // For Firefox, Chrome, etc.
-    "}"
-    "}";
+                                    "if (mySheet.addRule) {"
+                                        "mySheet.addRule(selector, newRule);"
+                                    "} else {"
+                                        "ruleIndex = mySheet.cssRules.length;"
+                                        "mySheet.insertRule(selector + '{' + newRule + ';}', ruleIndex);"
+                                    "}"
+                                 "}";
     
     /** 设置宽度 */
     NSString *setWebSize   = [NSString stringWithFormat: @"addCSSRule('html', 'padding: 10px; height: %fpx; -webkit-column-gap: 20px; -webkit-column-width: %fpx;')",pageHeight,pageWidth];
@@ -106,6 +112,8 @@
     NSString *setTextSize  = [NSString stringWithFormat: @"addCSSRule('body', '-webkit-text-size-adjust: %d%%;')", _fontSize];
     /** 设置字体颜色 */
     NSString *setbodycolor = [NSString stringWithFormat: @"addCSSRule('body', 'background-color: %@;')",themeBodyColor];
+    /** 设置标题颜色 */
+    NSString *setTitlecolor= [NSString stringWithFormat: @"addCSSRule('h3', 'color: %@;')",themeTextColor];
     /** 设置 H1标签 颜色 */
     NSString *setH1Color   = [NSString stringWithFormat: @"addCSSRule('h1', 'color: %@;')",themeTextColor];
     /** 设置段颜色 */
@@ -117,6 +125,7 @@
     [self.webView stringByEvaluatingJavaScriptFromString: setPRule];
     [self.webView stringByEvaluatingJavaScriptFromString: setTextSize];
     [self.webView stringByEvaluatingJavaScriptFromString: setbodycolor];
+    [self.webView stringByEvaluatingJavaScriptFromString: setTitlecolor];
     [self.webView stringByEvaluatingJavaScriptFromString: setH1Color];
     [self.webView stringByEvaluatingJavaScriptFromString: setPcolor];
     
@@ -127,7 +136,6 @@
         [self.delegate epubViewLoadFinished];
     }
 }
-
 
 #pragma mark - ScrollView Delegate Method
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView

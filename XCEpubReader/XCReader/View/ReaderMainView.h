@@ -55,13 +55,19 @@
 
 @property (nonatomic, weak)   id <EPubViewDelegate> delegate;
 
+
+#pragma mark - Public Method -
 /** 章节跳转 */
 - (void)loadChapter: (EpubChapterModel *)chapter;
 
 /** 下一页   */
-- (void)gotoPage: (int)pageIndex;
+- (void)gotoPage: (NSInteger)pageIndex;
 
+/** 设置字体 */
 - (void)setFontSize: (int)fontSize;
+
+/** 更新主题 */
+- (void)updateThemes:(ReaderThemesEnum)themStyle;
 
 /** 翻页出发的事件,用于更新进度 */
 - (void)setBlockPageDidChangedAction:(void (^)(CGFloat page))block;

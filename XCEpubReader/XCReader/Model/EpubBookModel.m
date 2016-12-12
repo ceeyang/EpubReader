@@ -58,32 +58,39 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
 {
     self = [super init];
     if (self) {
-        self.bookName      = [aDecoder decodeObjectForKey: @"bookName"];
-        self.spineArray    = [aDecoder decodeObjectForKey: @"spineArray"];
-        self.bookPath      = [aDecoder decodeObjectForKey: @"bookPath"];
-        self.parseSucceed  = [aDecoder decodeBoolForKey  : @"parseSucceed"];
-        self.recordModel   = [aDecoder decodeObjectForKey: @"recordModel"];
+        self.bookName            = [aDecoder decodeObjectForKey : @"bookName"];
+        self.spineArray          = [aDecoder decodeObjectForKey : @"spineArray"];
+        self.bookPath            = [aDecoder decodeObjectForKey : @"bookPath"];
+        self.parseSucceed        = [aDecoder decodeBoolForKey   : @"parseSucceed"];
+        self.recordModel         = [aDecoder decodeObjectForKey : @"recordModel"];
+        self.currentChapterIndex = [aDecoder decodeIntegerForKey: @"ChapterIndex"];
+        self.currentPageIndex    = [aDecoder decodeIntegerForKey: @"PageIndex"];
+        
     }
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
-    [aCoder encodeObject: self.bookName     forKey: @"bookName"];
-    [aCoder encodeObject: self.spineArray   forKey: @"spineArray"];
-    [aCoder encodeObject: self.bookPath     forKey: @"bookPath"];
-    [aCoder encodeBool  : self.parseSucceed forKey: @"parseSucceed"];
-    [aCoder encodeObject: self.recordModel  forKey: @"recordModel"];
+    [aCoder encodeObject : self.bookName            forKey: @"bookName"];
+    [aCoder encodeObject : self.spineArray          forKey: @"spineArray"];
+    [aCoder encodeObject : self.bookPath            forKey: @"bookPath"];
+    [aCoder encodeBool   : self.parseSucceed        forKey: @"parseSucceed"];
+    [aCoder encodeObject : self.recordModel         forKey: @"recordModel"];
+    [aCoder encodeInteger: self.currentPageIndex    forKey: @"PageIndex"];
+    [aCoder encodeInteger: self.currentChapterIndex forKey: @"ChapterIndex"];
 }
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    EpubBookModel *model = [[EpubBookModel allocWithZone:zone] init];
-    model.bookName       = self.bookName;
-    model.bookPath       = self.bookPath;
-    model.spineArray     = self.spineArray;
-    model.parseSucceed   = self.parseSucceed;
-    model.recordModel    = self.recordModel;
+    EpubBookModel *model      = [[EpubBookModel allocWithZone:zone] init];
+    model.bookName            = self.bookName;
+    model.bookPath            = self.bookPath;
+    model.spineArray          = self.spineArray;
+    model.parseSucceed        = self.parseSucceed;
+    model.recordModel         = self.recordModel;
+    model.currentPageIndex    = self.currentPageIndex;
+    model.currentChapterIndex = self.currentChapterIndex;
     return model;
 }
 
@@ -116,9 +123,15 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
     EpubBookModel * model = [[EpubBookModel alloc] initWithEPubBookPath:url];
     [EpubBookModel updateLocalModel:model url: url];
     return model;
-    
 }
 
+- (void)updateRecordeModel:(EpubRecordModel *)model withUrl:(NSURL *)url
+{
+    _recordModel = model;
+    [[self class] updateLocalModel:self url: url];
+}
+
+#pragma mark - 解析电子书 -
 - (BOOL)unzipBook
 {
     ZipArchive * zipArchive = [[ZipArchive alloc] init];
@@ -168,7 +181,7 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
     NSDictionary     * namespaces = [NSDictionary dictionaryWithObject:@"http://www.idpf.org/2007/opf" forKey:@"opf"];
     NSArray          * itemsArray = [OPFXMLDoc nodesForXPath:@"//opf:item" namespaces:namespaces error:nil];
     NSMutableDictionary * itemDic = [[NSMutableDictionary alloc] init];
-        
+    
     NSString * ncxFileName;
     for (GDataXMLElement *element in itemsArray) {
         
@@ -185,10 +198,16 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
     
     NSInteger lastSlash           = [self.opfPath rangeOfString:@"/" options:NSBackwardsSearch].location;
     _bookBasePath                 = [self.opfPath substringToIndex:(lastSlash + 1)];
-    _ncxPath                      = [NSString stringWithFormat:@"%@/%@%@",kUserDocuments,_bookBasePath,ncxFileName];
+    _ncxPath                      = [NSString stringWithFormat:@"%@%@",_bookBasePath,ncxFileName];
+    
+    if (![self isFileExist:_ncxPath]) {
+        NSLog(@"ncx文件不存在");
+        return;
+    }
     
     NSData *ncxPathUrl            = [[NSData alloc] initWithContentsOfFile: self.ncxPath];
     GDataXMLDocument    * ncxToc  = [[GDataXMLDocument alloc] initWithData:ncxPathUrl error:nil];
+    
     NSMutableDictionary *titleDic = [[NSMutableDictionary alloc] init];
     for (GDataXMLElement*element in itemsArray) {
         NSString     * href       = [[element attributeForName:@"href"] stringValue];
@@ -225,11 +244,6 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
     }
 }
 
-- (void)updateRecordeModel:(EpubRecordModel *)model withUrl:(NSURL *)url
-{
-    _recordModel = model;
-    [[self class] updateLocalModel:self url: url];
-}
 
 #pragma mark - Tool -
 -(BOOL)isFileExist:(NSString *)path
@@ -241,14 +255,5 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
 - (NSString *)withoutDocumentsStr:(NSString *)path
 {
     return [path substringFromIndex:kUserDocuments.length];
-}
-- (NSString *)withDocumentsStr:(NSString *)path
-{
-    return [NSString stringWithFormat:@"%@/%@",kUserDocuments,path];
-}
-- (NSString *)getAppRootDirectoryPath {
-    NSString *lastPath = kUserDocuments.lastPathComponent;
-    NSInteger length   = kUserDocuments.length - (lastPath.length+1);
-    return [kUserDocuments substringToIndex:length];
 }
 @end

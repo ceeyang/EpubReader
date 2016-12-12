@@ -12,6 +12,8 @@
 #import "ReaderMainView.h"
 #import "EpubRecordModel.h"
 #import "ReaderBottomView.h"
+#import "AppDelegate.h"
+#import "DirectoryViewController.h"
 
 @interface EpubMainViewController ()<EPubViewDelegate>
 
@@ -25,8 +27,6 @@
 /** 当前加载的电子书 */
 @property (nonatomic, strong) EpubBookModel  * epubBook;
 
-/** 当前章节在书中的索引值，从0开始 */
-@property (nonatomic, assign) int              currentSpineIndex;
 /** 书籍总页数，等于所有章节页数之和 */
 @property (nonatomic, assign) int              totalPagesCount;
 /** 跳转页码 */
@@ -87,15 +87,24 @@
 {
     __weak typeof(self) weakSelf = self;
     [self.topView setBlockBackBtnAction:^(UIButton *sender) {
+        [EpubBookModel updateLocalModel:weakSelf.epubBook url:[NSURL fileURLWithPath: weakSelf.filePath]];
         [weakSelf dismissViewControllerAnimated:true completion:nil];
     }];
     
+     /** 目录按钮 */
     [self.topView setBlockMoreBtnAction:^(UIButton *sender) {
-        [weakSelf.mainView setFontSize:150];
+        DirectoryViewController *directory = [DirectoryViewController new];
+        directory.spineArray = weakSelf.epubBook.spineArray;
+        /** 目录点击事件 */
+        [directory setDirectorySelectedAction:^(EpubChapterModel *model) {
+            [weakSelf gotoPage:0 inSpine:model.spineIndex];
+        }];
+        [weakSelf presentViewController:directory animated:true completion:nil];
     }];
     
     [self.mainView setBlockPageDidChangedAction:^(CGFloat page) {
         weakSelf.bottomView.pageSlider.value = page;
+        weakSelf.epubBook.currentPageIndex   = page;
     }];
     
     [self.bottomView setBlockBottomBtnAction:^(UIButton *btn) {
@@ -106,18 +115,23 @@
             ReaderConfiger.textSize += 5;
             [weakSelf.mainView setFontSize:ReaderConfiger.textSize];
         } else if (btn.tag == 2) {
-            [weakSelf.mainView loadChapter: weakSelf.epubBook.lastChapter];
+            weakSelf.epubBook.currentChapterIndex -=1;
+            if (weakSelf.epubBook.currentChapterIndex < 0) {return ;}
+            [weakSelf.mainView loadChapter: weakSelf.epubBook.spineArray[weakSelf.epubBook.currentChapterIndex]];
         } else if (btn.tag == 3) {
-            [weakSelf.mainView loadChapter: weakSelf.epubBook.nextChapter];
+            weakSelf.epubBook.currentChapterIndex +=1;
+            if (weakSelf.epubBook.currentChapterIndex >= weakSelf.epubBook.spineArray.count) {return ;}
+            [weakSelf.mainView loadChapter: weakSelf.epubBook.spineArray[weakSelf.epubBook.currentChapterIndex]];
         } else if (btn.tag == 4) {
-            //[weakSelf.mainView setThemes: ReaderConfiger.dailyTheme];
+            [weakSelf.mainView updateThemes: Daily];
         } else if (btn.tag == 5) {
-            //[weakSelf.mainView setThemes: ReaderConfiger.nightTheme];
+            [weakSelf.mainView updateThemes: Night];
         }
     }];
     
     [self.bottomView setBlockSliderValueChangeAction:^(CGFloat value) {
         int sliderPage = weakSelf.mainView.pageCount * value;
+        weakSelf.epubBook.currentPageIndex = sliderPage;
         [weakSelf.mainView gotoPage: sliderPage];
     }];
 }
@@ -127,11 +141,16 @@
     __weak typeof(self) weakSelf = self;
     NSURL * PathUrl = [NSURL fileURLWithPath:self.filePath];
     if (self.filePath && [[NSFileManager defaultManager] fileExistsAtPath: self.filePath]) {
+        [self showLoadingView];
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
             weakSelf.epubBook = [EpubBookModel getLocalModelWithURL: PathUrl];
             dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf hideLoadingView];
                 [weakSelf.topView setTitle: weakSelf.epubBook.bookName];
-                [weakSelf.mainView loadChapter: weakSelf.epubBook.spineArray[0]];
+                [weakSelf.mainView loadChapter: weakSelf.epubBook.spineArray[weakSelf.epubBook.currentChapterIndex]];
+                if (weakSelf.epubBook.currentPageIndex) {
+                    [weakSelf.mainView gotoPage: weakSelf.epubBook.currentPageIndex];
+                }
             });
         });
     }
@@ -141,18 +160,16 @@
 
 - (void)gotoPrevSpine
 {
-    [self showLoadingView];
-    if (_currentSpineIndex > 0)
+    if (self.epubBook.currentChapterIndex > 0)
     {
-        [self gotoPage:0 inSpine:--_currentSpineIndex];
+        [self gotoPage:0 inSpine: --self.epubBook.currentChapterIndex];
     }
 }
 
 - (void)gotoNextSpine
 {
-    [self showLoadingView];
-    if (_currentSpineIndex < self.epubBook.spineArray.count - 1) {
-        [self gotoPage:0 inSpine:++_currentSpineIndex];
+    if (self.epubBook.currentChapterIndex < self.epubBook.spineArray.count - 1) {
+        [self gotoPage:0 inSpine: ++self.epubBook.currentChapterIndex];
     }
 }
 
@@ -175,17 +192,15 @@
 
 
 #pragma mark - Read Control
-
 - (void)gotoPageInCurrentSpine:(int)pageIndex
 {
     [self.mainView gotoPage: pageIndex];
 }
 
-- (void)gotoPage:(int)pageIndex inSpine:(int)spineIndex
+- (void)gotoPage:(int)pageIndex inSpine:(NSInteger)spineIndex
 {
-    _currentSpineIndex        = spineIndex;
-    self.gotoPage             = pageIndex;
-    EpubChapterModel *chapter = [self.epubBook.spineArray objectAtIndex:spineIndex];
+    self.epubBook.currentPageIndex = pageIndex;
+    EpubChapterModel *chapter      = [self.epubBook.spineArray objectAtIndex:spineIndex];
     [self.mainView loadChapter: chapter];
 }
 
@@ -220,11 +235,10 @@
     }];
 }
 
-
-
 - (void)showLoadingView
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.mainView animated:YES];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: delegate.window animated:YES];
     hud.label.text     = @"请稍等";
     hud.dimBackground  = true;
     hud.opacity        = 0.5;
@@ -232,7 +246,8 @@
 
 - (void)hideLoadingView
 {
-    [MBProgressHUD hideHUDForView:self.mainView animated:true];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [MBProgressHUD hideHUDForView:delegate.window animated:true];
 }
 
 

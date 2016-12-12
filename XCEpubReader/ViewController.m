@@ -10,6 +10,8 @@
 #import "ReaderConfig.h"
 #import "EpubMainViewController.h"
 
+#import "ReaderPageViewController.h"
+
 #import "EpubBookModel.h"
 #import "EpubChapterModel.h"
 
@@ -24,55 +26,54 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIButton *readBtn         = [[UIButton alloc] initWithFrame:CGRectMake(50, 200, 50, 50)];
-    readBtn.backgroundColor   = [UIColor lightGrayColor];
-    [readBtn setTitle:@"Read" forState:UIControlStateNormal];
-    [readBtn addTarget:self action:@selector(readerBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: readBtn];
-    
-    UIButton *timeBtn         = [[UIButton alloc] initWithFrame:CGRectMake(110, 200, 50, 50)];
-    timeBtn.backgroundColor   = [UIColor lightGrayColor];
-    [timeBtn setTitle:@"Time" forState:UIControlStateNormal];
-    [timeBtn addTarget:self action:@selector(timeBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: timeBtn];
-    
-    UIButton *localBtn         = [[UIButton alloc] initWithFrame:CGRectMake(170, 200, 50, 50)];
-    localBtn.backgroundColor   = [UIColor lightGrayColor];
-    [localBtn setTitle:@"Local" forState:UIControlStateNormal];
-    [localBtn addTarget:self action:@selector(localBtnClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview: localBtn];
-    
+    NSArray *btnTitleArr = @[@"ScrollView",@"PageView",@"TesstBtn"];
+    NSMutableArray *btnArr = [NSMutableArray array];
+    for (int i = 0; i < btnTitleArr.count; i++) {
+        UIButton *btn         = [[UIButton alloc] init];
+        [btn setBackgroundColor: [UIColor lightGrayColor]];
+        [btn setTag: i];
+        [btn setTitle: btnTitleArr[i] forState:UIControlStateNormal];
+        btn.layer.masksToBounds = true;
+        btn.layer.cornerRadius  = 5.0f;
+        btn.layer.borderWidth   = 1;
+        btn.layer.borderColor   = [UIColor blueColor].CGColor;
+        [btn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview: btn];
+        [btnArr addObject: btn];
+    }
+    [btnArr mas_distributeViewsAlongAxis:MASAxisTypeVertical withFixedItemLength:44 leadSpacing:164 tailSpacing:100];
+    [btnArr mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.width.equalTo(@100);
+    }];
 }
 
-- (void)readerBtnClick
+- (void)btnClickAction:(UIButton *)sender
 {
-    EpubMainViewController *reader          = [EpubMainViewController new];
-    reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"];
-    [ReaderConfig shareInstance].textSize   = 100;
-    [ReaderConfig shareInstance].textColor  = [UIColor whiteColor];
-    [ReaderConfig shareInstance].themeColor = [UIColor lightGrayColor];
-    [self presentViewController:reader animated:true completion:nil];
-}
+    if (sender.tag == 0) {
+        
+        EpubMainViewController *reader          = [EpubMainViewController new];
+        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"];
+        [ReaderConfig shareInstance].textSize   = 100;
+        [ReaderConfig shareInstance].textColor  = [UIColor yellowColor];
+        [ReaderConfig shareInstance].themeColor = [UIColor greenColor];
+        [self presentViewController:reader animated:true completion:nil];
+        
+    } else if (sender.tag == 1) {
+        
+        ReaderPageViewController *reader        = [ReaderPageViewController new];
+        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"GreatWorld" ofType:@"epub"];
+        [ReaderConfig shareInstance].textSize   = 100;
+        [ReaderConfig shareInstance].textColor  = [UIColor whiteColor];
+        [ReaderConfig shareInstance].themeColor = [UIColor lightGrayColor];
 
-- (void)timeBtnAction
-{
-//    EpubBookModel *model = [EpubBookModel getLocalModelWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"]] local: false];
-//    EpubChapterModel *chapter = model.spineArray.firstObject;
-//    NSLog(@"time path :\n%@",chapter.spinePath);
-    
-    NSString *lastPath = kUserDocuments.lastPathComponent;
-    NSInteger length   = kUserDocuments.length - (lastPath.length+1);
-    NSLog(@"%@",kUserDocuments);
-    NSLog(@"%@",[kUserDocuments substringToIndex:length]);
-}
-
-- (void)localBtnClick
-{
-    NSString *userDir = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) lastObject];
-    NSLog(@"%@",userDir);
-//    EpubBookModel *model = [EpubBookModel getLocalModelWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"]]local: true];
-//    EpubChapterModel *chapter = model.spineArray.firstObject;
-//    NSLog(@"local path :\n%@",chapter.spinePath);
+        [self presentViewController:reader animated:true completion:nil];
+        
+    } else {
+        
+        
+        
+    }
 }
 
 - (void)didReceiveMemoryWarning {
