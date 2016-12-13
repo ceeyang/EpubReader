@@ -23,7 +23,7 @@
 typedef void(^ButtonActionBlock)(UIButton *btn);
 typedef void(^SliderValueChangeBlock)(CGFloat value);
 typedef void(^WebViewDidScrollBlock)(CGFloat currentPage);
-
+typedef void(^WebViewUrlDidClickActionBlock)(NSString *pathUrl);
 
 
 #endif /* XCReaderConst_h */

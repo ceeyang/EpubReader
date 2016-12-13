@@ -35,6 +35,7 @@
             [config addObserver:config forKeyPath:@"backColr"   options: NSKeyValueObservingOptionNew context: NULL];
             [config addObserver:config forKeyPath:@"themeStyle" options: NSKeyValueObservingOptionNew context: NULL];
             [config addObserver:config forKeyPath:@"themes"     options: NSKeyValueObservingOptionNew context: NULL];
+            [config addObserver:config forKeyPath:@"urlEnable"  options: NSKeyValueObservingOptionNew context: NULL];
             return config;
         }
         
@@ -44,6 +45,7 @@
         _backGroundColr = [UIColor whiteColor];
         _themeStyle     = Default;
         _themes         = [self getDefaultThemes];
+        _urlEnable      = true;
         
         [self addObserver:self forKeyPath:@"textSize"   options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"textColor"  options:NSKeyValueObservingOptionNew context: NULL];
@@ -51,6 +53,7 @@
         [self addObserver:self forKeyPath:@"backColr"   options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"themeStyle" options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"themes"     options:NSKeyValueObservingOptionNew context: NULL];
+        [self addObserver:self forKeyPath:@"urlEnable"  options:NSKeyValueObservingOptionNew context: NULL];
         [ReaderConfig updateLocalConfig:self];
         
     }
@@ -79,6 +82,7 @@
     [aCoder encodeObject:  self.backGroundColr forKey: @"backColr"];
     [aCoder encodeInteger: self.themeStyle     forKey: @"themeStyle"];
     [aCoder encodeObject:  self.themes         forKey: @"themes"];
+    [aCoder encodeBool:    self.urlEnable      forKey: @"urlEnable"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -91,6 +95,7 @@
         self.backGroundColr = [aDecoder decodeObjectForKey: @"backColr"];
         self.themeStyle     = [aDecoder decodeIntegerForKey:@"themeStyle"];
         self.themes         = [aDecoder decodeObjectForKey: @"themes"];
+        self.urlEnable      = [aDecoder decodeBoolForKey:   @"urlEnable"];
     }
     return self;
 }
@@ -113,8 +118,8 @@
             themeModel                         = [self getDefaultThemes];
             break;
         case ProtectEyes:
-            themeModel.textColor               = @"#EAEAEF"; /** 纯黑 */
-            themeModel.textBackgroundColor     = @"#C7EDCC"; /** 纯白 */
+            themeModel.textColor               = @"#000000"; /** 黑色 */
+            themeModel.textBackgroundColor     = @"#C7EDCC"; /** 护眼绿 */
             themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
             themeModel.toolViewToolColor       = [UIColor blackColor];
             break;
@@ -129,6 +134,7 @@
             themeModel.textBackgroundColor     = @"#000000"; /** 纯黑 */
             themeModel.toolViewBackgroundColor = [UIColor lightGrayColor];
             themeModel.toolViewToolColor       = [UIColor blackColor];
+            
             break;
         default:
             break;

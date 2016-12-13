@@ -24,9 +24,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"EpubReader";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    NSArray *btnTitleArr = @[@"ScrollView",@"PageView",@"TesstBtn"];
+    NSArray *btnTitleArr = @[@"EpubReader",@"PageView"];
     NSMutableArray *btnArr = [NSMutableArray array];
     for (int i = 0; i < btnTitleArr.count; i++) {
         UIButton *btn         = [[UIButton alloc] init];
@@ -53,16 +54,14 @@
     if (sender.tag == 0) {
         
         EpubMainViewController *reader          = [EpubMainViewController new];
-        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"];
-        [ReaderConfig shareInstance].textSize   = 100;
-        [ReaderConfig shareInstance].textColor  = [UIColor yellowColor];
-        [ReaderConfig shareInstance].themeColor = [UIColor greenColor];
+        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"GreatWorld" ofType:@"epub"];
+        [ReaderConfig shareInstance].themeStyle = ProtectEyes;
         [self presentViewController:reader animated:true completion:nil];
         
     } else if (sender.tag == 1) {
         
         ReaderPageViewController *reader        = [ReaderPageViewController new];
-        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"GreatWorld" ofType:@"epub"];
+        reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"四大名捕系列" ofType:@"epub"];
         [ReaderConfig shareInstance].textSize   = 100;
         [ReaderConfig shareInstance].textColor  = [UIColor whiteColor];
         [ReaderConfig shareInstance].themeColor = [UIColor lightGrayColor];
@@ -70,8 +69,6 @@
         [self presentViewController:reader animated:true completion:nil];
         
     } else {
-        
-        
         
     }
 }

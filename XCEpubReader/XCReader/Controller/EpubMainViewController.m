@@ -106,7 +106,11 @@
         weakSelf.bottomView.pageSlider.value = page;
         weakSelf.epubBook.currentPageIndex   = page;
     }];
+    [self.mainView setBlockWebUrlDidClickAction:^(NSString *pathUrl) {
+        [weakSelf webUrlDidClickWith:pathUrl];
+    }];
     
+    /** 底部按钮点击事件 */
     [self.bottomView setBlockBottomBtnAction:^(UIButton *btn) {
         if        (btn.tag == 0) {
             ReaderConfiger.textSize -= 5;
@@ -134,6 +138,15 @@
         weakSelf.epubBook.currentPageIndex = sliderPage;
         [weakSelf.mainView gotoPage: sliderPage];
     }];
+}
+
+- (void)webUrlDidClickWith:(NSString *)pathUrlStr
+{
+    for (EpubChapterModel *chapter in self.epubBook.spineArray) {
+        if ([chapter.spinePath.lastPathComponent isEqualToString: pathUrlStr]) {
+            [self gotoPage:0 inSpine:chapter.spineIndex];
+        }
+    }
 }
 
 - (void)parseEpubData
@@ -199,7 +212,8 @@
 
 - (void)gotoPage:(int)pageIndex inSpine:(NSInteger)spineIndex
 {
-    self.epubBook.currentPageIndex = pageIndex;
+    self.epubBook.currentPageIndex    = pageIndex;
+    self.epubBook.currentChapterIndex = spineIndex;
     EpubChapterModel *chapter      = [self.epubBook.spineArray objectAtIndex:spineIndex];
     [self.mainView loadChapter: chapter];
 }

@@ -14,7 +14,8 @@
 
 @interface ReaderMainView () <UIScrollViewDelegate, UIWebViewDelegate,UIGestureRecognizerDelegate>
 @property (assign, nonatomic) CGPoint touchBeginPoint;
-@property (nonatomic, copy) WebViewDidScrollBlock webViewDidScrollBlock;
+@property (nonatomic, copy) WebViewDidScrollBlock          webViewDidScrollBlock;
+@property (nonatomic, copy) WebViewUrlDidClickActionBlock  webUrlClickActionBlock;
 @end
 
 @implementation ReaderMainView
@@ -110,14 +111,10 @@
     NSString *setPRule     = [NSString stringWithFormat: @"addCSSRule('p', 'text-align: justify;')"];
     /** 设置字体大小 */
     NSString *setTextSize  = [NSString stringWithFormat: @"addCSSRule('body', '-webkit-text-size-adjust: %d%%;')", _fontSize];
-    /** 设置字体颜色 */
+    /** 设置字体背景色 */
     NSString *setbodycolor = [NSString stringWithFormat: @"addCSSRule('body', 'background-color: %@;')",themeBodyColor];
-    /** 设置标题颜色 */
-    NSString *setTitlecolor= [NSString stringWithFormat: @"addCSSRule('h3', 'color: %@;')",themeTextColor];
-    /** 设置 H1标签 颜色 */
-    NSString *setH1Color   = [NSString stringWithFormat: @"addCSSRule('h1', 'color: %@;')",themeTextColor];
-    /** 设置段颜色 */
-    NSString *setPcolor    = [NSString stringWithFormat: @"addCSSRule('p', 'color: %@;')",themeTextColor];
+    /** 设置字体颜色 */
+    NSString *setTitlecolor= [NSString stringWithFormat: @"addCSSRule('body', 'color: %@;')",themeTextColor];
     
     [self.webView stringByEvaluatingJavaScriptFromString: varMySheet];
     [self.webView stringByEvaluatingJavaScriptFromString: addCSSRule];
@@ -126,14 +123,30 @@
     [self.webView stringByEvaluatingJavaScriptFromString: setTextSize];
     [self.webView stringByEvaluatingJavaScriptFromString: setbodycolor];
     [self.webView stringByEvaluatingJavaScriptFromString: setTitlecolor];
-    [self.webView stringByEvaluatingJavaScriptFromString: setH1Color];
-    [self.webView stringByEvaluatingJavaScriptFromString: setPcolor];
     
     int totalWidth    = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth"] intValue];
     _pageCount        = ceil(totalWidth / self.webView.bounds.size.width);
     _currentPageIndex = 0;
     if ([self.delegate respondsToSelector:@selector(epubViewLoadFinished)]) {
         [self.delegate epubViewLoadFinished];
+    }
+}
+
+/** 设置 webview 中的链接地址是否可点击 */
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    if (navigationType == UIWebViewNavigationTypeLinkClicked) {
+        
+        if (ReaderConfiger.isUrlEnable) {
+            /** 获取到链接的 url 地址,在主控制器中做跳转 */
+            NSString *urlStr = request.URL.absoluteString.lastPathComponent;
+            if (self.webUrlClickActionBlock) {
+                self.webUrlClickActionBlock(urlStr);
+            }
+        }
+        return false;
+    } else {
+        return true;
     }
 }
 
@@ -181,5 +194,10 @@
 - (void)setBlockPageDidChangedAction:(void (^)(CGFloat))block
 {
     self.webViewDidScrollBlock = block;
+}
+
+- (void)setBlockWebUrlDidClickAction:(void (^)(NSString *pathUrl))block
+{
+    self.webUrlClickActionBlock = block;
 }
 @end

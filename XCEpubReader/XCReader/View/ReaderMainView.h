@@ -53,6 +53,7 @@
 /** 离线模型 */
 @property (nonatomic, strong) EpubRecordModel    * recordModel;
 
+
 @property (nonatomic, weak)   id <EPubViewDelegate> delegate;
 
 
@@ -71,4 +72,7 @@
 
 /** 翻页出发的事件,用于更新进度 */
 - (void)setBlockPageDidChangedAction:(void (^)(CGFloat page))block;
+
+/** 文章中的链接点击事件 */
+- (void)setBlockWebUrlDidClickAction:(void (^)(NSString *pathUrl))block;
 @end
