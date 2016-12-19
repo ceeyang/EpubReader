@@ -9,6 +9,8 @@
 #ifndef XCReaderConst_h
 #define XCReaderConst_h
 
+@class EpubBookModel;
+
 #pragma mark - Global Define -
 #define FileManager      [NSFileManager defaultManager]
 #define ReaderConfiger   [ReaderConfig shareInstance]
@@ -22,8 +24,10 @@
 /** Action Block */
 typedef void(^ButtonActionBlock)(UIButton *btn);
 typedef void(^SliderValueChangeBlock)(CGFloat value);
-typedef void(^WebViewDidScrollBlock)(CGFloat currentPage);
+typedef void(^WebViewDidScrollBlock)(NSInteger currentPage,NSInteger totalPage,NSString *chapterName);
+typedef void(^WebViewDidFinishLoadBlock)();
 typedef void(^WebViewUrlDidClickActionBlock)(NSString *pathUrl);
-
+typedef void(^FirstChapterDidParseSuccess)(EpubBookModel *book);
+typedef void(^LastChapterDidParseSuccess)(EpubBookModel *book);
 
 #endif /* XCReaderConst_h */

@@ -8,6 +8,9 @@
 
 #import "ReaderMainView.h"
 #import "ReaderThemes.h"
+#import "ReaderConfig.h"
+#import "XCReaderConst.h"
+#import "UIColor+Hex.h"
 
 #define COLOR_WITH_HEX(hexValue) [UIColor colorWithRed:((float)((hexValue & 0xFF0000) >> 16)) / 255.0 green:((float)((hexValue & 0xFF00) >> 8)) / 255.0 blue:((float)(hexValue & 0xFF)) / 255.0 alpha:1.0f]
 
@@ -16,6 +19,7 @@
 @property (assign, nonatomic) CGPoint touchBeginPoint;
 @property (nonatomic, copy) WebViewDidScrollBlock          webViewDidScrollBlock;
 @property (nonatomic, copy) WebViewUrlDidClickActionBlock  webUrlClickActionBlock;
+@property (nonatomic, copy) WebViewDidFinishLoadBlock      webViewDidFinishdLoadBlock;
 @end
 
 @implementation ReaderMainView
@@ -58,25 +62,84 @@
     [self.webView loadRequest: [NSURLRequest requestWithURL:url]];
 }
 
-- (void)gotoPage:(NSInteger)pageIndex
+- (void)loadChapter:(EpubChapterModel *)chapter withPageIndex:(NSInteger)page
+{
+    _chapter                      = chapter;
+    _recordModel.chapterModel     = _chapter;
+    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@",kUserDocuments,chapter.spinePath]];
+    [self.webView loadRequest: [NSURLRequest requestWithURL:url]];
+    
+    /** 等待 webview 加载完毕,然后跳转页面 */
+    __weak typeof(self) weakSelf = self;
+    self.webViewDidFinishdLoadBlock = ^() {
+        [weakSelf gotoPage:page isSliderAction:false];
+    };
+}
+
+- (void)loadChapter:(EpubChapterModel *)chapter whenSuccess:(void (^)())successBlock
+{
+    _chapter                      = chapter;
+    _recordModel.chapterModel     = _chapter;
+    self.webView.backgroundColor  = [UIColor colorWithHexString:ReaderConfiger.themes.textBackgroundColor];
+    NSURL *url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@",kUserDocuments,chapter.spinePath]];
+    [self.webView loadRequest: [NSURLRequest requestWithURL:url]];
+    
+    self.webViewDidFinishdLoadBlock = successBlock;
+}
+
+- (void)gotoPage:(NSInteger)pageIndex animation:(BOOL)animation
+{
+    [self gotoPage:pageIndex isSliderAction:false animation:animation];
+}
+
+- (void)gotoPage:(NSInteger)pageIndex isSliderAction:(BOOL)isSliderAction
+{
+    [self gotoPage:pageIndex isSliderAction:isSliderAction animation:true];
+}
+
+- (void)gotoPage: (NSInteger)pageIndex isSliderAction:(BOOL)isSliderAction animation:(BOOL)animation
 {
     _currentPageIndex = pageIndex;
     _recordModel.page = pageIndex;
     float pageOffset  = pageIndex * self.webView.bounds.size.width;
-    [self.webView.scrollView setContentOffset:CGPointMake(pageOffset, 0) animated:NO];;
-    if (self.webViewDidScrollBlock) {
-        CGFloat pageValue = (CGFloat)(_currentPageIndex+1) / (CGFloat)_pageCount;
-        self.webViewDidScrollBlock(pageValue);
+    __weak typeof(self) weakSelf = self;
+    if (pageIndex+1 > _pageCount) {
+        return;
+    }
+    
+    if (animation) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [weakSelf.webView.scrollView setContentOffset:CGPointMake(pageOffset, 0) animated:NO];;
+        }];
+    } else {
+        [weakSelf.webView.scrollView setContentOffset:CGPointMake(pageOffset, 0) animated:NO];;
+    }
+    
+    /** 如果是滑动 slider调用这个方法 */
+    if (isSliderAction == false) {
+        if (self.webViewDidScrollBlock) {
+            self.webViewDidScrollBlock(_currentPageIndex+1,_pageCount,_chapter.title);
+        }
     }
 }
 
 - (void)setFontSize:(int)fontSize
 {
-    
     if(_fontSize <= 200 || _fontSize >= 50) {
         _fontSize = fontSize;
-        [self loadChapter:self.chapter];
+        
+        __weak typeof(self) weakSelf = self;
+        CGFloat pageValue = (CGFloat)(_currentPageIndex) / (CGFloat)(_pageCount);
+        [self loadChapter:self.chapter whenSuccess:^{
+            [weakSelf resetCurrentPageWhenFontSizeChangedWith:pageValue];
+        }];
     }
+}
+
+- (void)resetCurrentPageWhenFontSizeChangedWith:(CGFloat)pageValue
+{
+    NSInteger currentPage = pageValue * _pageCount;
+    [self gotoPage:currentPage isSliderAction:false];
 }
 
 - (void)updateThemes:(ReaderThemesEnum)themStyle
@@ -130,6 +193,11 @@
     if ([self.delegate respondsToSelector:@selector(epubViewLoadFinished)]) {
         [self.delegate epubViewLoadFinished];
     }
+    
+    if (self.webViewDidFinishdLoadBlock) {
+        self.webViewDidFinishdLoadBlock();
+        self.webViewDidFinishdLoadBlock = nil;
+    }
 }
 
 /** 设置 webview 中的链接地址是否可点击 */
@@ -164,8 +232,7 @@
     
     if (lastPageIndex != _currentPageIndex) {
         if (self.webViewDidScrollBlock) {
-            CGFloat pageValue = (CGFloat)(_currentPageIndex+1) / (CGFloat)_pageCount;
-            self.webViewDidScrollBlock(pageValue);
+            self.webViewDidScrollBlock(_currentPageIndex+1,_pageCount,_chapter.title);
         }
     }
     
@@ -191,7 +258,7 @@
     }
 }
 
-- (void)setBlockPageDidChangedAction:(void (^)(CGFloat))block
+- (void)setBlockPageDidChangedAction:(void (^)(NSInteger currentPage,NSInteger totalPage,NSString *chapterName))block
 {
     self.webViewDidScrollBlock = block;
 }

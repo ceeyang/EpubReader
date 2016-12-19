@@ -7,6 +7,8 @@
 //
 
 #import "ReaderTopView.h"
+#import "XCReaderConst.h"
+#import "ReaderConfig.h"
 
 @interface ReaderTopView()
 @property (nonatomic, strong) UILabel * mTitleLabel;

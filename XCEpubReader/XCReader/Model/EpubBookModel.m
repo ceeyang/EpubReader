@@ -9,6 +9,9 @@
 #import "EpubBookModel.h"
 #import "ZipArchive.h"
 #import "EpubChapterModel.h"
+#import "XCReaderConst.h"
+#import "ReaderConfig.h"
+#import "GDataXMLNode.h"
 
 typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
 
@@ -17,37 +20,24 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
 @property (nonatomic, readonly) NSString          * ncxPath;
 @property (nonatomic, strong) NSString            * bookBasePath;
 @property (nonatomic, copy)     ParseSuccessBlock   finishedBlock;
+@property (nonatomic, copy) FirstChapterDidParseSuccess  firstChapterFinishedBlock;
+@property (nonatomic, copy) LastChapterDidParseSuccess   lastChapterFinishedBlock;
 @end
 
 
 @implementation EpubBookModel
-- (id)initWithEPubBookPath:(NSURL *)bookPath
+- (id)initWithEPubBookPath:(NSURL *)bookPath whenFirstChapterFinished:(void(^)(EpubBookModel *book))firstChacperFinished finalSuccess:(void(^)(EpubBookModel *book))success
 {
     if((self = [super init])) {
-        _bookPath           = bookPath.path;
-        NSString * lastPath = [bookPath.path lastPathComponent];
-        NSInteger loc2      = [lastPath rangeOfString:@"." options:NSBackwardsSearch].location;
-        NSInteger len       = lastPath.length - loc2 + 1;
-        _bookName           = [lastPath substringWithRange:NSMakeRange(0, len)];
-        _spineArray         = [[NSMutableArray alloc] init];
+        _bookPath                  = bookPath.path;
+        NSString * lastPath        = [bookPath.path lastPathComponent];
+        NSInteger loc2             = [lastPath rangeOfString:@"." options:NSBackwardsSearch].location;
+        NSInteger len              = lastPath.length - loc2 + 1;
+        _bookName                  = [lastPath substringWithRange:NSMakeRange(0, len)];
+        _spineArray                = [[NSMutableArray alloc] init];
+        _firstChapterFinishedBlock = firstChacperFinished;
+        _lastChapterFinishedBlock  = success;
     }
-    [self unzipBook];
-    [self parseManifestFile];
-    [self parseOPFFile];
-    return self;
-}
-
-- (id)initWithEPubBookPath:(NSURL *)bookPath completion:(void (^)(BOOL,NSString *))completion
-{
-    if((self = [super init])) {
-        _bookPath           = bookPath.path;
-        NSString * lastPath = [bookPath.path lastPathComponent];
-        NSInteger loc2      = [lastPath rangeOfString:@"." options:NSBackwardsSearch].location;
-        NSInteger len       = lastPath.length - loc2;
-        _bookName           = [lastPath substringWithRange:NSMakeRange(0, len)];
-        _spineArray         = [[NSMutableArray alloc] init];
-    }
-    
     [self unzipBook];
     [self parseManifestFile];
     [self parseOPFFile];
@@ -118,11 +108,13 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
             return model;
         }
     }
-    
-    NSLog(@"Local File Not Exist,Start parese File");
-    EpubBookModel * model = [[EpubBookModel alloc] initWithEPubBookPath:url];
+    return nil;
+}
+
++ (void)parseBookWithUrl:(NSURL *)url whenFirstChapterFinished:(void(^)(EpubBookModel *book))firstChacperFinished finalSuccess:(void(^)(EpubBookModel *book))success
+{
+    EpubBookModel * model = [[EpubBookModel alloc]initWithEPubBookPath:url whenFirstChapterFinished:firstChacperFinished finalSuccess:success];
     [EpubBookModel updateLocalModel:model url: url];
-    return model;
 }
 
 - (void)updateRecordeModel:(EpubRecordModel *)model withUrl:(NSURL *)url
@@ -222,7 +214,6 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
     }
     
     NSArray        * itemRefsArray = [OPFXMLDoc nodesForXPath:@"//opf:itemref" namespaces:namespaces error:nil];
-    NSMutableArray * tmpArray      = [[NSMutableArray alloc] init];
     int count = 0;
     for (GDataXMLElement *element in itemRefsArray)
     {
@@ -233,14 +224,18 @@ typedef void(^ParseSuccessBlock)(BOOL finished, NSString * bookName);
         [chapter setSpineIndex: count];
         [chapter setSpinePath: spinePath];
         [chapter setTitle: spineTitle];
+        [_spineArray addObject:chapter];
+        if (count == 0) {
+            if (self.firstChapterFinishedBlock) {
+                self.firstChapterFinishedBlock(self);
+            }
+        }
         count++;
-        [tmpArray addObject:chapter];
     }
     
-    _spineArray   = tmpArray;
     _parseSucceed = self.spineArray.count > 0;
-    if (self.finishedBlock) {
-        self.finishedBlock(true,_bookName);
+    if (self.lastChapterFinishedBlock) {
+        self.lastChapterFinishedBlock(self);
     }
 }
 

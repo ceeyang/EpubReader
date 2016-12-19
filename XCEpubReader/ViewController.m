@@ -11,7 +11,7 @@
 #import "EpubMainViewController.h"
 
 #import "ReaderPageViewController.h"
-
+#import "Masonry.h"
 #import "EpubBookModel.h"
 #import "EpubChapterModel.h"
 
@@ -27,7 +27,7 @@
     self.title = @"EpubReader";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    NSArray *btnTitleArr = @[@"EpubReader",@"PageView"];
+    NSArray *btnTitleArr = @[@"Open EpubReader",@"Page view test"];
     NSMutableArray *btnArr = [NSMutableArray array];
     for (int i = 0; i < btnTitleArr.count; i++) {
         UIButton *btn         = [[UIButton alloc] init];
@@ -41,12 +41,18 @@
         [btn addTarget:self action:@selector(btnClickAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview: btn];
         [btnArr addObject: btn];
+        
+        if (i == 1) {
+            btn.hidden = true;
+        }
     }
+    
     [btnArr mas_distributeViewsAlongAxis:MASAxisTypeVertical withFixedItemLength:44 leadSpacing:164 tailSpacing:100];
     [btnArr mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.width.equalTo(@100);
+        make.width.mas_greaterThanOrEqualTo(@100);
     }];
+    
 }
 
 - (void)btnClickAction:(UIButton *)sender
@@ -56,6 +62,7 @@
         EpubMainViewController *reader          = [EpubMainViewController new];
         reader.filePath                         = [[NSBundle mainBundle] pathForResource:@"GreatWorld" ofType:@"epub"];
         [ReaderConfig shareInstance].themeStyle = ProtectEyes;
+        [ReaderConfig shareInstance].urlEnable  = true;
         [self presentViewController:reader animated:true completion:nil];
         
     } else if (sender.tag == 1) {

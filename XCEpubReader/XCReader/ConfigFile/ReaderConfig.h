@@ -42,7 +42,7 @@ typedef NS_ENUM(NSUInteger, ReaderThemesEnum) {
 /** 提供几个默认主题,也可以自己设置 */
 @property (nonatomic, assign) ReaderThemesEnum  themeStyle;
 
-/** 是否开启, web页面内部链接跳转,默认 : true */
+/** 是否开启, web页面内部链接跳转,default is false */
 @property (nonatomic, assign,getter=isUrlEnable) BOOL  urlEnable;
 @end
 

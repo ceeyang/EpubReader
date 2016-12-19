@@ -16,7 +16,7 @@
     static ReaderConfig *readConfig = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        readConfig = [[self alloc] init];
+        readConfig = [[ReaderConfig alloc] init];
     });
     return readConfig;
 }
@@ -45,7 +45,7 @@
         _backGroundColr = [UIColor whiteColor];
         _themeStyle     = Default;
         _themes         = [self getDefaultThemes];
-        _urlEnable      = true;
+        _urlEnable      = false;
         
         [self addObserver:self forKeyPath:@"textSize"   options:NSKeyValueObservingOptionNew context: NULL];
         [self addObserver:self forKeyPath:@"textColor"  options:NSKeyValueObservingOptionNew context: NULL];

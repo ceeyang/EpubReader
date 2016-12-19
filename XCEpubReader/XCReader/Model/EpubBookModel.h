@@ -36,10 +36,10 @@
 @property (nonatomic, assign) NSInteger          currentChapterIndex;
 @property (nonatomic, assign) NSInteger          currentPageIndex;
 
-- (id)initWithEPubBookPath: (NSURL *)bookPath;
+/** 初始化方法 */
+- (id)initWithEPubBookPath: (NSURL *)bookPath whenFirstChapterFinished:(void(^)(EpubBookModel *book))firstChacperFinished finalSuccess:(void(^)(EpubBookModel *book))success;
 
-- (id)initWithEPubBookPath: (NSURL *)bookPath
-                completion: (void (^)(BOOL finished, NSString *bookName))completion;
++ (void)parseBookWithUrl:(NSURL *)url whenFirstChapterFinished:(void(^)(EpubBookModel *book))firstChacperFinished finalSuccess:(void(^)(EpubBookModel *book))success;
 
 + (void)updateLocalModel: (EpubBookModel *)readModel
                      url: (NSURL *)url;

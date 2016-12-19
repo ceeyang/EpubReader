@@ -7,11 +7,21 @@
 //
 
 #import "ReaderBottomView.h"
+#import "XCReaderConst.h"
+#import "ReaderConfig.h"
 
 @interface ReaderBottomView()
-@property (nonatomic, copy) ButtonActionBlock  bottomBtnClickActionBlock;
+@property (nonatomic, copy)   ButtonActionBlock      bottomBtnClickActionBlock;
+@property (nonatomic, copy)   SliderValueChangeBlock sliderValueChangeBlock;
+
 @property (nonatomic, strong) UILabel * currentChapterLabel;
-@property (nonatomic, strong) SliderValueChangeBlock sliderValueChangeBlock;
+
+@property (nonatomic, strong) UILabel * currentPageLabel;
+
+@property (nonatomic, assign) NSInteger  currentPage;
+
+@property (nonatomic, assign) NSInteger  totalPage;
+
 @end
 
 @implementation ReaderBottomView
@@ -43,6 +53,21 @@
         make.height.equalTo(@44);
     }];
     
+    UILabel *currentPageLabel = [UILabel new];
+    currentPageLabel.numberOfLines = 1;
+    currentPageLabel.textAlignment = NSTextAlignmentRight;
+    currentPageLabel.font          = [UIFont systemFontOfSize:14];
+    currentPageLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:currentPageLabel];
+    self.currentPageLabel = currentPageLabel;
+    [currentPageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(self.mas_right).offset(-10);
+        make.width.mas_greaterThanOrEqualTo(40);
+        make.height.mas_equalTo(20);
+        make.bottom.equalTo(self.mas_bottom).offset(-54);
+    }];
+    
+    
     UISlider *slider      = [UISlider new];
     slider.backgroundColor= [UIColor clearColor];
     slider.maximumValue   = 1.0f;
@@ -51,9 +76,8 @@
     [self addSubview: slider];
     [slider mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(10);
-        make.right.equalTo(self.mas_right).offset(-10);
-        make.bottom.equalTo(self.mas_bottom).offset(-54);
-        make.height.equalTo(@20);
+        make.right.equalTo(currentPageLabel.mas_left).offset(-5);
+        make.bottom.height.equalTo(currentPageLabel);
     }];
     self.pageSlider       = slider;
     
@@ -82,14 +106,11 @@
 
 - (void)sliderClickAction:(UISlider *)slider
 {
+    _currentPage               = _totalPage * slider.value;
+    self.currentPageLabel.text = [NSString stringWithFormat:@"%ld/%ld",_currentPage,_totalPage];
     if (self.sliderValueChangeBlock) {
         self.sliderValueChangeBlock(slider.value);
     }
-}
-
-- (void)setBlockBottomBtnAction:(void (^)(UIButton *))block
-{
-    self.bottomBtnClickActionBlock = block;
 }
 
 - (void)setMCurrentChapter:(NSString *)mCurrentChapter
@@ -97,9 +118,21 @@
     self.currentChapterLabel.text = mCurrentChapter;
 }
 
+- (void)updatePageLabelWithCurrentPage:(NSInteger)currentPage totalPage:(NSInteger)totalPage;
+{
+    self.currentPage           = currentPage;
+    self.totalPage             = totalPage;
+    self.currentPageLabel.text = [NSString stringWithFormat:@"%ld/%ld",currentPage,totalPage];
+}
+
 - (void)setBlockSliderValueChangeAction:(void (^)(CGFloat))block
 {
     self.sliderValueChangeBlock = block;
+}
+
+- (void)setBlockBottomBtnAction:(void (^)(UIButton *))block
+{
+    self.bottomBtnClickActionBlock = block;
 }
 
 @end

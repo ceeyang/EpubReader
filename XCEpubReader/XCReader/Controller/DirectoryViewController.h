@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSMutableArray * spineArray;
 
+@property (nonatomic, assign) NSInteger  currentIndex;
+
 - (void)setDirectorySelectedAction:(void(^)(EpubChapterModel *model))block;
 
 @end

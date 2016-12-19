@@ -11,6 +11,7 @@
 #import "MainViewController.h"
 #import "ReaderBottomView.h"
 #import "EpubBookModel.h"
+#import "Masonry.h"
 
 @interface ReaderPageViewController ()<UIPageViewControllerDelegate,UIPageViewControllerDataSource>
 @property (nonatomic, strong) UIPageViewController * pageViewController;

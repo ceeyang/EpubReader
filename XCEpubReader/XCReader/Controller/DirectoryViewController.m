@@ -91,14 +91,7 @@ typedef void(^DirectoryDidSelectedBlock)(EpubChapterModel *model);
 
 -(void)refreshSelectRow
 {
-    //NSMutableDictionary *item=[self.epubVC catalogWithPageRef:self.epubVC.currentPageRefIndex];
-//    if (item)
-//    {
-//        NSUInteger rowIndex= [self.epubVC.epubCatalogs indexOfObject:item];
-//        
-//        [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-//    }
-//    
+    [self.tableView selectRowAtIndexPath:[NSIndexPath indexPathForRow:_currentIndex inSection:0] animated:YES scrollPosition:UITableViewScrollPositionMiddle];
 }
 
 #pragma mark - TableView data source delegate

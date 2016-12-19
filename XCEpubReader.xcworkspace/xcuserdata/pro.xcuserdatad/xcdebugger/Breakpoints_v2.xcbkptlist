@@ -19,13 +19,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCEpubReader/XCReader/Controller/EpubMainViewController.m"
-            timestampString = "503286721.271512"
+            filePath = "XCEpubReader/XCReader/Model/EpubBookModel.m"
+            timestampString = "503743464.907021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
-            landmarkName = "-addBlockAction"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "-parseOPFFile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCEpubReader/XCReader/Model/EpubBookModel.m"
+            timestampString = "503743464.907021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "-parseOPFFile"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,13 +51,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "XCEpubReader/XCReader/Controller/EpubMainViewController.m"
-            timestampString = "503305467.082684"
+            filePath = "XCEpubReader/XCReader/Model/EpubBookModel.m"
+            timestampString = "503743464.907021"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
-            landmarkName = "-addBlockAction"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "-parseOPFFile"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "XCEpubReader/XCReader/Model/EpubBookModel.m"
+            timestampString = "503743464.907021"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
+            landmarkName = "-parseOPFFile"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
