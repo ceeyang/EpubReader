@@ -12,6 +12,15 @@
 		151EC0681D9A687000D538C8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 151EC0671D9A687000D538C8 /* MainViewController.m */; };
 		158AE9DA1DFAA2BD00370F62 /* DirectoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 158AE9D91DFAA2BD00370F62 /* DirectoryViewController.m */; };
 		158AE9DC1DFE4D1900370F62 /* GreatWorld.epub in Resources */ = {isa = PBXBuildFile; fileRef = 158AE9DB1DFE4D1900370F62 /* GreatWorld.epub */; };
+		159D6B7C1E076ED200769C65 /* new_head_arrow_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B731E076ED200769C65 /* new_head_arrow_left@2x.png */; };
+		159D6B7D1E076ED200769C65 /* new_head_arrow_left@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B741E076ED200769C65 /* new_head_arrow_left@3x.png */; };
+		159D6B7E1E076ED200769C65 /* new_head_arrow_left_pre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B751E076ED200769C65 /* new_head_arrow_left_pre@2x.png */; };
+		159D6B7F1E076ED200769C65 /* new_head_arrow_left_pre@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B761E076ED200769C65 /* new_head_arrow_left_pre@3x.png */; };
+		159D6B801E076ED200769C65 /* new_head_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B771E076ED200769C65 /* new_head_more@2x.png */; };
+		159D6B811E076ED200769C65 /* new_head_more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B781E076ED200769C65 /* new_head_more@3x.png */; };
+		159D6B821E076ED200769C65 /* new_head_more_pre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B791E076ED200769C65 /* new_head_more_pre@2x.png */; };
+		159D6B831E076ED200769C65 /* new_head_more_pre@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B7A1E076ED200769C65 /* new_head_more_pre@3x.png */; };
+		159D6B841E076ED200769C65 /* 四大名捕系列.epub in Resources */ = {isa = PBXBuildFile; fileRef = 159D6B7B1E076ED200769C65 /* 四大名捕系列.epub */; };
 		15FC799F1D952BA4008A92B9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC799E1D952BA4008A92B9 /* main.m */; };
 		15FC79A21D952BA4008A92B9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79A11D952BA4008A92B9 /* AppDelegate.m */; };
 		15FC79A51D952BA4008A92B9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79A41D952BA4008A92B9 /* ViewController.m */; };
@@ -21,19 +30,10 @@
 		15FC79BF1D953004008A92B9 /* EpubMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79BC1D953004008A92B9 /* EpubMainViewController.m */; };
 		15FC79C21D953045008A92B9 /* ReaderTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79C11D953045008A92B9 /* ReaderTopView.m */; };
 		15FC79CE1D953390008A92B9 /* UIScrollView+Touch.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC79CC1D953390008A92B9 /* UIScrollView+Touch.m */; };
-		15FC7A101D9540B7008A92B9 /* new_head_arrow_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A0A1D9540B7008A92B9 /* new_head_arrow_left@2x.png */; };
-		15FC7A111D9540B7008A92B9 /* new_head_arrow_left@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A0B1D9540B7008A92B9 /* new_head_arrow_left@3x.png */; };
-		15FC7A161D9540F6008A92B9 /* new_head_more_pre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A121D9540F6008A92B9 /* new_head_more_pre@2x.png */; };
-		15FC7A171D9540F6008A92B9 /* new_head_more_pre@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A131D9540F6008A92B9 /* new_head_more_pre@3x.png */; };
-		15FC7A181D9540F6008A92B9 /* new_head_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A141D9540F6008A92B9 /* new_head_more@2x.png */; };
-		15FC7A191D9540F6008A92B9 /* new_head_more@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A151D9540F6008A92B9 /* new_head_more@3x.png */; };
 		15FC7A1B1D954349008A92B9 /* ReaderConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC7A1A1D954349008A92B9 /* ReaderConfig.m */; };
 		15FC7A201D954A70008A92B9 /* EpubBookModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC7A1F1D954A70008A92B9 /* EpubBookModel.m */; };
 		15FC7A3F1D957B61008A92B9 /* EpubChapterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC7A3E1D957B61008A92B9 /* EpubChapterModel.m */; };
-		15FC7A411D957D30008A92B9 /* 四大名捕系列.epub in Resources */ = {isa = PBXBuildFile; fileRef = 15FC7A401D957D30008A92B9 /* 四大名捕系列.epub */; };
 		15FC7A441D9584FE008A92B9 /* ReaderMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FC7A431D9584FE008A92B9 /* ReaderMainView.m */; };
-		15FF2E661D9612AC00B496CF /* new_head_arrow_left_pre@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FF2E641D9612AC00B496CF /* new_head_arrow_left_pre@2x.png */; };
-		15FF2E671D9612AC00B496CF /* new_head_arrow_left_pre@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 15FF2E651D9612AC00B496CF /* new_head_arrow_left_pre@3x.png */; };
 		15FF2E6A1D962EC000B496CF /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FF2E691D962EC000B496CF /* UIColor+Hex.m */; };
 		15FF2E6D1D96535600B496CF /* EpubRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FF2E6C1D96535600B496CF /* EpubRecordModel.m */; };
 		15FF2E701D968D6200B496CF /* ReaderBottomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 15FF2E6F1D968D6200B496CF /* ReaderBottomView.m */; };
@@ -50,6 +50,15 @@
 		158AE9D81DFAA2BD00370F62 /* DirectoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DirectoryViewController.h; sourceTree = "<group>"; };
 		158AE9D91DFAA2BD00370F62 /* DirectoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DirectoryViewController.m; sourceTree = "<group>"; };
 		158AE9DB1DFE4D1900370F62 /* GreatWorld.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = GreatWorld.epub; sourceTree = "<group>"; };
+		159D6B731E076ED200769C65 /* new_head_arrow_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left@2x.png"; sourceTree = "<group>"; };
+		159D6B741E076ED200769C65 /* new_head_arrow_left@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left@3x.png"; sourceTree = "<group>"; };
+		159D6B751E076ED200769C65 /* new_head_arrow_left_pre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left_pre@2x.png"; sourceTree = "<group>"; };
+		159D6B761E076ED200769C65 /* new_head_arrow_left_pre@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left_pre@3x.png"; sourceTree = "<group>"; };
+		159D6B771E076ED200769C65 /* new_head_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more@2x.png"; sourceTree = "<group>"; };
+		159D6B781E076ED200769C65 /* new_head_more@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more@3x.png"; sourceTree = "<group>"; };
+		159D6B791E076ED200769C65 /* new_head_more_pre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more_pre@2x.png"; sourceTree = "<group>"; };
+		159D6B7A1E076ED200769C65 /* new_head_more_pre@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more_pre@3x.png"; sourceTree = "<group>"; };
+		159D6B7B1E076ED200769C65 /* 四大名捕系列.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "四大名捕系列.epub"; sourceTree = "<group>"; };
 		15FC799A1D952BA4008A92B9 /* XCEpubReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XCEpubReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15FC799E1D952BA4008A92B9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		15FC79A01D952BA4008A92B9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = ../AppDelegate.h; sourceTree = "<group>"; };
@@ -68,12 +77,6 @@
 		15FC79CB1D953342008A92B9 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		15FC79CC1D953390008A92B9 /* UIScrollView+Touch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Touch.m"; sourceTree = "<group>"; };
 		15FC79CD1D953390008A92B9 /* UIScrollView+Touch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Touch.h"; sourceTree = "<group>"; };
-		15FC7A0A1D9540B7008A92B9 /* new_head_arrow_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left@2x.png"; sourceTree = "<group>"; };
-		15FC7A0B1D9540B7008A92B9 /* new_head_arrow_left@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left@3x.png"; sourceTree = "<group>"; };
-		15FC7A121D9540F6008A92B9 /* new_head_more_pre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more_pre@2x.png"; sourceTree = "<group>"; };
-		15FC7A131D9540F6008A92B9 /* new_head_more_pre@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more_pre@3x.png"; sourceTree = "<group>"; };
-		15FC7A141D9540F6008A92B9 /* new_head_more@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more@2x.png"; sourceTree = "<group>"; };
-		15FC7A151D9540F6008A92B9 /* new_head_more@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_more@3x.png"; sourceTree = "<group>"; };
 		15FC7A1A1D954349008A92B9 /* ReaderConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderConfig.m; sourceTree = "<group>"; };
 		15FC7A1E1D954A70008A92B9 /* EpubBookModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpubBookModel.h; sourceTree = "<group>"; };
 		15FC7A1F1D954A70008A92B9 /* EpubBookModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpubBookModel.m; sourceTree = "<group>"; };
@@ -81,12 +84,9 @@
 		15FC7A3A1D954F30008A92B9 /* libz.1.1.3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.1.3.tbd; path = usr/lib/libz.1.1.3.tbd; sourceTree = SDKROOT; };
 		15FC7A3D1D957B61008A92B9 /* EpubChapterModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpubChapterModel.h; sourceTree = "<group>"; };
 		15FC7A3E1D957B61008A92B9 /* EpubChapterModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EpubChapterModel.m; sourceTree = "<group>"; };
-		15FC7A401D957D30008A92B9 /* 四大名捕系列.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "四大名捕系列.epub"; sourceTree = "<group>"; };
 		15FC7A421D9584FE008A92B9 /* ReaderMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderMainView.h; sourceTree = "<group>"; };
 		15FC7A431D9584FE008A92B9 /* ReaderMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderMainView.m; sourceTree = "<group>"; };
 		15FF2E631D96112700B496CF /* XCReaderConst.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XCReaderConst.h; sourceTree = "<group>"; };
-		15FF2E641D9612AC00B496CF /* new_head_arrow_left_pre@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left_pre@2x.png"; sourceTree = "<group>"; };
-		15FF2E651D9612AC00B496CF /* new_head_arrow_left_pre@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "new_head_arrow_left_pre@3x.png"; sourceTree = "<group>"; };
 		15FF2E681D962EC000B496CF /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
 		15FF2E691D962EC000B496CF /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		15FF2E6B1D96535600B496CF /* EpubRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EpubRecordModel.h; sourceTree = "<group>"; };
@@ -119,6 +119,22 @@
 				151EC0671D9A687000D538C8 /* MainViewController.m */,
 			);
 			path = PageTest;
+			sourceTree = "<group>";
+		};
+		159D6B721E076ED200769C65 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				159D6B731E076ED200769C65 /* new_head_arrow_left@2x.png */,
+				159D6B741E076ED200769C65 /* new_head_arrow_left@3x.png */,
+				159D6B751E076ED200769C65 /* new_head_arrow_left_pre@2x.png */,
+				159D6B761E076ED200769C65 /* new_head_arrow_left_pre@3x.png */,
+				159D6B771E076ED200769C65 /* new_head_more@2x.png */,
+				159D6B781E076ED200769C65 /* new_head_more@3x.png */,
+				159D6B791E076ED200769C65 /* new_head_more_pre@2x.png */,
+				159D6B7A1E076ED200769C65 /* new_head_more_pre@3x.png */,
+				159D6B7B1E076ED200769C65 /* 四大名捕系列.epub */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		15FC79911D952BA4008A92B9 = {
@@ -162,7 +178,7 @@
 		15FC79B51D952BF8008A92B9 /* XCReader */ = {
 			isa = PBXGroup;
 			children = (
-				15FC7A051D95402C008A92B9 /* Resource */,
+				159D6B721E076ED200769C65 /* Resources */,
 				15FC79C91D9531FB008A92B9 /* Category */,
 				15FC79C31D95312C008A92B9 /* ConfigFile */,
 				15FC79BA1D953004008A92B9 /* Controller */,
@@ -248,22 +264,6 @@
 			path = Category;
 			sourceTree = "<group>";
 		};
-		15FC7A051D95402C008A92B9 /* Resource */ = {
-			isa = PBXGroup;
-			children = (
-				15FC7A401D957D30008A92B9 /* 四大名捕系列.epub */,
-				15FC7A141D9540F6008A92B9 /* new_head_more@2x.png */,
-				15FC7A151D9540F6008A92B9 /* new_head_more@3x.png */,
-				15FC7A121D9540F6008A92B9 /* new_head_more_pre@2x.png */,
-				15FC7A131D9540F6008A92B9 /* new_head_more_pre@3x.png */,
-				15FC7A0A1D9540B7008A92B9 /* new_head_arrow_left@2x.png */,
-				15FC7A0B1D9540B7008A92B9 /* new_head_arrow_left@3x.png */,
-				15FF2E641D9612AC00B496CF /* new_head_arrow_left_pre@2x.png */,
-				15FF2E651D9612AC00B496CF /* new_head_arrow_left_pre@3x.png */,
-			);
-			path = Resource;
-			sourceTree = "<group>";
-		};
 		15FC7A371D954E5C008A92B9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,18 +345,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15FC7A161D9540F6008A92B9 /* new_head_more_pre@2x.png in Resources */,
-				15FF2E671D9612AC00B496CF /* new_head_arrow_left_pre@3x.png in Resources */,
-				15FC7A191D9540F6008A92B9 /* new_head_more@3x.png in Resources */,
+				159D6B821E076ED200769C65 /* new_head_more_pre@2x.png in Resources */,
 				15FC79AD1D952BA4008A92B9 /* LaunchScreen.storyboard in Resources */,
-				15FC7A181D9540F6008A92B9 /* new_head_more@2x.png in Resources */,
-				15FC7A171D9540F6008A92B9 /* new_head_more_pre@3x.png in Resources */,
+				159D6B811E076ED200769C65 /* new_head_more@3x.png in Resources */,
+				159D6B7F1E076ED200769C65 /* new_head_arrow_left_pre@3x.png in Resources */,
+				159D6B7D1E076ED200769C65 /* new_head_arrow_left@3x.png in Resources */,
+				159D6B831E076ED200769C65 /* new_head_more_pre@3x.png in Resources */,
+				159D6B7C1E076ED200769C65 /* new_head_arrow_left@2x.png in Resources */,
+				159D6B841E076ED200769C65 /* 四大名捕系列.epub in Resources */,
 				158AE9DC1DFE4D1900370F62 /* GreatWorld.epub in Resources */,
+				159D6B7E1E076ED200769C65 /* new_head_arrow_left_pre@2x.png in Resources */,
+				159D6B801E076ED200769C65 /* new_head_more@2x.png in Resources */,
 				15FC79AA1D952BA4008A92B9 /* Assets.xcassets in Resources */,
-				15FC7A411D957D30008A92B9 /* 四大名捕系列.epub in Resources */,
-				15FC7A111D9540B7008A92B9 /* new_head_arrow_left@3x.png in Resources */,
-				15FC7A101D9540B7008A92B9 /* new_head_arrow_left@2x.png in Resources */,
-				15FF2E661D9612AC00B496CF /* new_head_arrow_left_pre@2x.png in Resources */,
 				15FC79A81D952BA4008A92B9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
