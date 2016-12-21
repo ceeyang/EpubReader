@@ -12,7 +12,6 @@
 #import "ReaderMainView.h"
 #import "EpubRecordModel.h"
 #import "ReaderBottomView.h"
-#import "AppDelegate.h"
 #import "DirectoryViewController.h"
 #import "XCReaderConst.h"
 #import "ReaderConfig.h"
@@ -326,8 +325,7 @@
 
 - (void)showLoadingView
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: delegate.window animated:YES];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo: self.view animated:YES];
     hud.labelText      = @"请稍等";
     hud.dimBackground  = true;
     hud.opacity        = 0.5;
@@ -335,8 +333,7 @@
 
 - (void)hideLoadingView
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [MBProgressHUD hideHUDForView:delegate.window animated:true];
+    [MBProgressHUD hideHUDForView:self.view animated:true];
 }
 
 

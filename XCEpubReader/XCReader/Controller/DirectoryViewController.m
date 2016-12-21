@@ -7,6 +7,7 @@
 //
 
 #import "DirectoryViewController.h"
+#import "Masonry.h"
 
 typedef void(^DirectoryDidSelectedBlock)(EpubChapterModel *model);
 
@@ -70,7 +71,7 @@ typedef void(^DirectoryDidSelectedBlock)(EpubChapterModel *model);
     [self.btnBack addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     [_footView addSubview:self.btnBack];
     self.btnBack.titleLabel.font=[UIFont systemFontOfSize:14.0f];
-    [self.btnBack setTitle:NSLocalizedString(@"返回", @"") forState:UIControlStateNormal];
+    [self.btnBack setTitle:@"返回"forState:UIControlStateNormal];
     [self.btnBack mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.centerX.mas_equalTo(_footView);
     }];
