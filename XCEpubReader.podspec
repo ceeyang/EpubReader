@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
     s.exclude_files       = 'Classes/Exclude'
     s.resources           = "XCEpubReader/XCReader/Resources/*.png"
     s.framework           = 'UIKit'
-    s.public_header_files = 'XCEpubReader/Supporting Files/PrefixHeader.pch'
+    s.public_header_files = 'PrefixHeader.pch'
     s.requires_arc        = true
     s.dependency           "GDataXML-HTML"
     s.dependency           "Masonry"
